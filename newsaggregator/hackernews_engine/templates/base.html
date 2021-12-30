@@ -1,0 +1,44 @@
+{% load static %}<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Hacker News</title>
+  <style type="text/css">
+    body {
+      width: 500px;
+      margin: 0 auto;
+    }
+    .infinite-item, .loading {
+      margin-bottom: 5px;
+      background-color: #1eaedb;
+      color: #fff;
+      text-align: center;
+      padding: 25px 0;
+    }
+    .loading {
+      background-color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h2>Home - <small>{% block pagetitle %}{% endblock %}</small></h2>
+  <hr>
+  <a href="{% url 'stories:top_stories' %}">Top Stories</a>/
+  <a href="{% url 'stories:new_stories' %}">New Stories</a>/
+  <a href="{% url 'stories:show_jobs' %}">Show Jobs</a>/
+  <a href="{% url 'stories:comments' %}">Comments </a>
+</hr>
+  <p>
+   <form class="form-inline my-2 my-lg-0" method="GET" action="{% url 'stories:search' %}" >
+   <input class="form-control mr-sm-2" type="search" name="search">
+   <button class="btn btn btn-outline-info my-2 my-sm-0" type="submit"> Search </button>
+   </form></p>
+  {% block content %}
+  {% endblock %}
+
+  <script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
+  <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+  <script src="{% static 'js/infinite.min.js' %}"></script>
+  {% block javascript %}{% endblock %}
+</body>
+</html>

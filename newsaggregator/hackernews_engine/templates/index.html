@@ -1,0 +1,19 @@
+<html>
+
+<head>
+    <script type="text/javascript">
+        // A CSRF token is required when making post requests in Django
+        // To be used for making AJAX requests in script.js
+        window.CSRF_TOKEN = "{{ csrf_token }}";
+    </script>
+</head>
+
+<body>
+    <h2>Stories</h2>
+    <div id="posts">{% include 'posts.html' %}</div>
+    <div>
+        <a id="load_stories" href="javascript:void(0);" data-page="2">Load More Posts</a>
+    </div>
+</body>
+
+</html>
