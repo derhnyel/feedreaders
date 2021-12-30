@@ -1,90 +1,45 @@
-{% extends 'base.html' %}
-
-{% block pagetitle %}Home{% endblock %}
-
-{% block javascript %}
-  <script>
+{% extends 'base.html' %} {% block pagetitle %}Home{% endblock %} {% block javascript %}
+<script>
     var infinite = new Waypoint.Infinite({
-      element: $('.infinite-container')[0],
-      onBeforePageLoad: function () {
-        $('.loading').show();
-      },
-      onAfterPageLoad: function ($items) {
-        $('.loading').hide();
-      }
+        element: $('.infinite-container')[0],
+        onBeforePageLoad: function() {
+            $('.loading').show();
+        },
+        onAfterPageLoad: function($items) {
+            $('.loading').hide();
+        }
     });
-  </script>
-{% endblock %}
-
-{% block content %}
-  <div class="infinite-container">
+</script>
+{% endblock %} {% block content %}
+<div class="infinite-container">
     {% for number in numbers %}
-      <div class="infinite-item">
-          <h4><a href={{ number.url }}>{{ number.title }}</a></h4>
-          <h4><a href={{ number.url }}>{{ number.date_fetched }}</a></h4>
-          <h4><a href={{ number.url }}>{{ number.time }}</a></h4>
-          {% if number.text is not None %}
-          <p  class="article-content ">{{ number.text|truncatewords:"35"|linebreaks }}</p>
-          <a href="https://dsd.com">read more</a>
-          {% endif %}  
-          <h4>Posted by: {{ number.by }}</h4>
-          {% if number.score is not None %}
-            <p>Post Score: {{ number.score }}</p>
-          {% endif %}
-          {% if number.kids is not None %}
-            <p>Comments: {{ number.kids }}</p>
-          {% endif %}
+    <div class="infinite-item">
+        <h2>{{ forloop.counter }}</h2>
+        {% if number.title is not None %}
+        <h4><a href={{ number.url }}>{{ number.title }}</a></h4>
+        {% else %}
+        <h4>{{number.type}}</h4> {% endif %}
+        <h4>{{ number.time }}</h4>
+        {% if number.text is not None %}
+        <p class="article-content ">{{ number.text|truncatewords:"35"|linebreaks }}</p>
+        <a href="https://dsd.com">read more</a> {% endif %}
+        <h4>Posted by: {{ number.by }}</h4>
+        {% if number.score is not None %}
+        <p>Post Score: {{ number.score }}</p>
+        {% endif %} {% if number.kids is not None %}
+        <p>Comments: {{ number.kids}}</p>
+        {% endif %} {% ifequal number.type 'story' %}
+        <a href="{% url 'stories:listcomment' number.id  %}">
+            <button type="button" class="btn btn-primary">View comments</button>
+        </a>
+        {%endifequal%} {% endfor %}
 
-    {% endfor %}
-  </div>
-
-  <div class="loading" style="display: none;">
-    Loading...
-  </div>
-
-
-  {% if  page_obj.has_next %}
-    <a class="infinite-more-link" href="?page={{  page_obj.next_page_number }}">More</a>
-  {% endif %}
-  {% if  numbers.has_next %}
-  <a class="infinite-more-link" href="?page={{  numbers.next_page_number }}">More</a>
-{% endif %}
+        <div class="loading " style="display: none; ">
+            Loading...
+        </div>
 
 
-<ul class="pagination justify-content-center my-5">
-    {% if numbers.has_previous %}
-    <!-- 'First' and 'Previous' Buttons -->
-      <li class="page-item">
-        <a class="page-link" href="?page=1">|&lt; First</a>
-      </li>
-      <li class="page-item">
-        <a class="page-link" href="?page={{ numbers.previous_page_number }}">&lt; Previous</a>
-      </li>
-    {% endif %}
-  
-    <!-- Numbered Buttons -->
-    {% for page in paginator.page_range %}
-      {% if numbers.number == page %}
-        <li class="page-item">
-          <a class="page-link" href="?page={{ page }}"><strong><u>{{ page }}</u></strong></a>
-        </li>
-      {% elif page > numbers.number|add:'-3' and page < numbers.number|add:'3' %}
-        <li class="page-item">
-          <a class="page-link" href="?page={{ page }}">{{ page }}</a>
-        </li>
-      {% endif %}
-    {% endfor %}
-  
-    <!-- 'Next' and 'Last' Buttons -->
-    {% if numbers.has_next %}
-      <li class="page-item">
-        <a class="page-link" 
-          href="?page={{ numbers.next_page_number }}">Next &gt;</a>
-      </li>
-      <li class="page-item">
-        <a class="page-link" href="?page={{ numbers.paginator.num_pages }}">Last &gt;|</a>
-      </li>
-    {% endif %}
-  </ul>
-
-{% endblock %}
+        {% if page_obj.has_next %}
+        <p><br><a class="infinite-more-link " href="?page={{ page_obj.next_page_number }} ">More</a> {% endif %} {% if numbers.has_next %}</div>
+    </p>
+    <p><br><a class="infinite-more-link " href="?page={{ numbers.next_page_number }} ">More</a> </div>{% endif %} {% endblock %}

@@ -24,5 +24,6 @@ urlpatterns = [
     path('jobs/',views.JobView.as_view(),name='show_jobs'),
     path('comments/',views.CommentView.as_view(),name='comments'),
     path('results/', views.SearchView.as_view(), name='search'),
+    path('listcomment/<int:parent>/', views.ListCommentView.as_view(), name='listcomment')
 
 ]

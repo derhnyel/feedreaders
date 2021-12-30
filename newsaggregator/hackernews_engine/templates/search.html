@@ -1,11 +1,8 @@
-{% extends "base.html" %}
-
-{% block content %}
-    {% for result in all_search_results %}
-        <h3>{{result.title}}</h3>
-        <p>Posted By: {{result.by}}</p>
-        <p><a href={{result.url}}>{{result.url}}</a></p>
-    {% empty %}
-        <h2>No results found</h2>
-    {% endfor %}
-{% endblock %}
+{% extends "base.html" %} {% block content %} {% for result in all_search_results %}
+<h3>{{result.title}}</h3>
+<h3>{{result.text}}</h3>
+<p>Posted By: {{result.by}}</p>
+<p><a href={{result.url}}>{{result.url}}</a></p>
+{% empty %}
+<h2>No results found</h2>
+{% endfor %} {% endblock %}

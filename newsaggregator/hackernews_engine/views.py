@@ -22,7 +22,7 @@ def index(request):
 
 def NewStoriesView(request):
     pages_data = get_loader(request,'new')
-    return render(request,'home.html',{'numbers': pages_data})
+    return render(request,'home.html',{'numbers': pages_data,})
 
 def merge_models(source=None,title=None):
     if title is not None:
@@ -109,7 +109,8 @@ class TopStoriesView(ListView):
         """ Facilitates pagination and post count summary"""
         context = super(TopStoriesView, self).get_context_data(**kwargs)
         context['numbers'] = context.pop('page_obj', None)
-        return context    
+        return context 
+
 class JobView(ListView):
     paginate_by = 5
     context_object_name = 'numbers'
@@ -118,7 +119,26 @@ class JobView(ListView):
         queryset = initialize('job')
         return queryset
 
+
+class ListCommentView(ListView):
+    model = Items
+    paginate_by = 5
+    context_object_name = 'numbers'
+    template_name = 'home.html'
+    def get_queryset(self):
+        result = super(ListCommentView, self).get_queryset()
+        query=self.request.resolver_match.kwargs.get('parent')
+        if query:
+            postresult = Items.objects.filter(parent=query).all().order_by('date_fetched')
+            result = postresult
+        else:
+            result = None
+        return result    
+
 class CommentView(ListView):
+    model = Items
+    template_name = 'search.html'
+    context_object_name = 'all_search_results'
     paginate_by = 5
     context_object_name = 'numbers'
     template_name = 'home.html'
