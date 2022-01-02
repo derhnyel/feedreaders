@@ -10,7 +10,6 @@ from django.core.cache import cache
 from asgiref.sync import sync_to_async
 from django.views.generic.list import ListView
 from itertools import chain
-import time
 from django.template import RequestContext
 
 def handler404(request):
@@ -51,20 +50,13 @@ def get_loader(request,source):
     return num_pages       
 
 
-#helpers
-# def get_response():
-#     while not (cache.get('triggertop') and cache.get('triggernew') and cache.get('triggerjob')) :
-#         time.sleep(5)
-#         pass
+
          
 
 def initialize(source):
     cached_ids = cache.get("cached_{source}_ids".format(source=source))
     db_ids = Items.objects.values_list('id',flat=True)
     #loop = asyncio.get_event_loop()
-    # if not db_ids.exists():
-    #     wait_sync = sync_to_async(get_response(),thread_sensitive=True)
-    #     #loop.create_task(wait_sync())
     if cached_ids is None and db_ids.exists():
        if source is 'top':
            items = Items.objects.filter(top=True).all().order_by('date_fetched')
