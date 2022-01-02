@@ -131,8 +131,11 @@
                             </li> {% ifequal number.type 'job' %}
                             <li style="padding: 3px 0 0px 0; border-bottom: 1px solid #eeeded " class=" ">
                                 <h5 class="text-left hidden-xs " style="font-weight: bold " font-weight="normal " color="#999999 ">{%with val=page_obj.number|sub:1%}{{numbers|length| mul:val |addition:forloop.counter}}{% endwith %}</h5>
+                                {%ifequal number.url None%}
+                                <a class="one-line-ellipsis " style="color: #c02d2dc5 " target="_blank " tabindex="0 " data-toggle="popover " data-html="true " data-placement="auto " data-content="{{number.text}} ">
+                                  {{number.title}}</a> {%else%}
                                 <a class="one-line-ellipsis " style="color: #c02d2dc5 " href="{{ number.url }} " target="_blank " tabindex="0 " data-toggle="popover " data-html="true " data-placement="auto " data-content="{{number.text}} ">
-                                  {{number.title}}</a>
+                                  {{number.title}}</a> {%endifequal%}
                                 <small class="text-center ">By: {{ number.by }} | Created: {{number.time}}</small> {%endifequal%}
                             </li>
                             {%endfor%}
