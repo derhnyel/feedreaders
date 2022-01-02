@@ -1,8 +1,10 @@
 {% extends "base.html" %} {% block content %} {% for result in all_search_results %}
 <h3>{{result.title}}</h3>
-<h3>{{result.text}}</h3>
+<h4>Item Type : {{result.type}}</h4>
 <p>Posted By: {{result.by}}</p>
-<p><a href={{result.url}}>{{result.url}}</a></p>
+<p>Created: {{result.time}} </p>
+<p>Rating: {{result.score}} </p>
+<p><a href={{result.url}}>Visit Link: {{result.url}}</a></p>
 {% empty %}
 <h2>No results found</h2>
 {% endfor %} {% endblock %}

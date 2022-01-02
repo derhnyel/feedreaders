@@ -1,6 +1,6 @@
 from django.db import models
 
-from django.contrib.postgres.fields import ArrayField
+
 
 
 # Create your models here.
@@ -21,9 +21,10 @@ class Items (models.Model):
     url = models.URLField(blank=True,null=True)
     parent = models.IntegerField(blank=True,null=True)
     score = models.IntegerField(blank=True,null=True)
-    parts = ArrayField(models.IntegerField(),blank=True,null=True)
-    kids = ArrayField(models.IntegerField(),blank=True,null=True)
+    kids = models.IntegerField(blank=True,null=True)
     date_fetched = models.DateTimeField(auto_now_add=True)
+    top=models.BooleanField(blank=True,null=True)
+    
     def __str__(self):
         return "{}".format((self.id,self.type,self.title,self.descendants,self.parent,
         self.by,self.score,self.url,self.text))
@@ -38,6 +39,7 @@ class Posts(models.Model):
     by = models.CharField(max_length=200,default='auth user', editable=False)
     url = models.URLField()
     time = models.DateTimeField(auto_now_add=True)
+    
     def __str__(self):
         return "{}".format((self.type,self.title,self.by,self.url,self.text))    
 

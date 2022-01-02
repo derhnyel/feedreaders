@@ -2,18 +2,7 @@
 from django.urls import path
 from rest_framework.urlpatterns import format_suffix_patterns
 from . import views
-# from .views import ItemsViewset 
 
-# from rest_framework.routers import DefaultRouter
-
-# router = DefaultRouter()
-
-# router.register('data',ItemsViewset,basename='items-data')
-
-
-# urlpatterns = [
-#     url('',include(router.urls)),
-# ]
 app_name = 'stories'
 urlpatterns = [
     path('api/', views.PostView.as_view()),

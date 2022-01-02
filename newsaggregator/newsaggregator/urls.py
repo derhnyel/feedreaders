@@ -20,6 +20,4 @@ from hackernews_engine import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include("hackernews_engine.urls")),
-    #path('stories/fake',views.articles,name='fake_stories'),
-    #path('load_stories/',views.load_stories,name="load_stories")
 ]

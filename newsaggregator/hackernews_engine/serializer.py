@@ -6,7 +6,7 @@ class ItemsSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Items
-        fields = ['type','source','title','time','text','id','deleted','by','dead','descendants','url','parent','score','kids','parts','date_fetched']
+        fields = ['type','source','title','time','text','id','deleted','by','dead','descendants','url','parent','score','kids','date_fetched','top']
 
 class PostsSerializer(serializers.ModelSerializer):
     class Meta:

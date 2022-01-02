@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% block pagetitle %}Home{% endblock %} {% block javascript %}
+﻿{% extends 'base.html' %}{% block javascript %} {% load mathfilters %}
 <script>
     var infinite = new Waypoint.Infinite({
         element: $('.infinite-container')[0],
@@ -10,36 +10,219 @@
         }
     });
 </script>
-{% endblock %} {% block content %}
-<div class="infinite-container">
-    {% for number in numbers %}
-    <div class="infinite-item">
-        <h2>{{ forloop.counter }}</h2>
-        {% if number.title is not None %}
-        <h4><a href={{ number.url }}>{{ number.title }}</a></h4>
-        {% else %}
-        <h4>{{number.type}}</h4> {% endif %}
-        <h4>{{ number.time }}</h4>
-        {% if number.text is not None %}
-        <p class="article-content ">{{ number.text|truncatewords:"35"|linebreaks }}</p>
-        <a href="https://dsd.com">read more</a> {% endif %}
-        <h4>Posted by: {{ number.by }}</h4>
-        {% if number.score is not None %}
-        <p>Post Score: {{ number.score }}</p>
-        {% endif %} {% if number.kids is not None %}
-        <p>Comments: {{ number.kids}}</p>
-        {% endif %} {% ifequal number.type 'story' %}
-        <a href="{% url 'stories:listcomment' number.id  %}">
-            <button type="button" class="btn btn-primary">View comments</button>
-        </a>
-        {%endifequal%} {% endfor %}
+<script type="text/javascript">
+    setTimeout(function() {
+        location.reload();
+    }, 2 * 60 * 1000);
+</script>
+<script>
+    $(document).ready(function() {
+        $('.two-line-ellipsis').ellipsis({
+            lines: 2,
+            responsive: true
+        });
+        $('.one-line-ellipsis').ellipsis({
+            lines: 1,
+            responsive: true
+        });
+        $('.two-line-ellipsis').on('click', function(e) {
+            $(this).find('.ellip-line').removeClass('ellip-line');
+        });
+        $('.editor').summernote({
+            height: '200px'
+        });
+        var mobile = window.matchMedia('(max-width: 992px)').matches;
+        if (!mobile) {
+            var heights = $('.equal-height').map(function() {
+                    return $(this).height();
+                }).get(),
+                maxHeight = Math.max.apply(null, heights);
+            $('.equal-height').height(maxHeight);
+        }
+    });
+</script>
 
-        <div class="loading " style="display: none; ">
-            Loading...
+<body class="Topics homepage">
+
+    <style>
+        h3 {
+            margin-top: 0px;
+        }
+        
+        .row2 {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        
+        .row2>[class*='col-'] {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .main {
+            padding: 0px 10px
+        }
+        
+        .alert {
+            margin-bottom: 0px
+        }
+    </style>
+    <script>
+        $('.main').removeClass('col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2');
+        $('.sidebar').remove();
+        $('body > div.container-fluid:first').removeClass('container-fluid').addClass('container');
+    </script>
+    {%endblock%} {% block content %}
+    <div class="container">
+        <h3></h3>
+        <h5 class="text-center hidden-xs" style="font-weight: bold">
+        </h5>
+        <div class="row row2">
+            <div class="col-xs-12">
+                {%with val=numbers.0%} {%ifequal val.top True%}
+                <h3 style="font-weight: bold;">Hackernews&#039;s Top Stories</h3>{%endifequal%} {%ifequal val.type 'comment'%}
+                <h3 style="font-weight: bold;">Hackernews&#039;s Comments</h3>{%endifequal%} {%ifequal val.type 'job'%}
+                <h3 style="font-weight: bold;">Hackernews&#039;s Jobs</h3>{%endifequal%} {%ifequal val.source 'new' %}
+                <h3 style="font-weight: bold;">Hackernews&#039;s New Stories</h3>{%endifequal%}{%endwith%}
+
+            </div>
+            <div class="col-xs-12 col-md-4">
+                <p style="font-weight: bold; ">
+                    <a style="color: #ea2f10; font-size: 17px;" href="{% url 'stories:top_stories' %} " target=" _blank ">News Aggregator</a>
+                    <span style="font-weight: normal; color: #999999; font-size: 75% ">
+<a href="https://news.ycombinator.com " target="_blank ">(hackernews.site)</a>
+</span>
+                </p>
+
+
+                <div class="infinite-container ">
+                    {% for number in numbers %}
+                    <ul style="list-style: none; padding-left: 0px; ">
+                        <div class="infinite-item ">
+                            {% ifequal number.type 'story' %}
+
+                            <li style="padding: 3px 0 0px 0; border-bottom: 1px solid #eeeded " class=" ">
+                                <h5 class="text-left hidden-xs " style="font-weight: bold " font-weight="normal " color="#999999 ">{%with val=numbers.number|sub:1%}{{ numbers|length| mul:val |addition:forloop.counter}}{% endwith %}</h5>
+                                <a class="one-line-ellipsis " style="color: #b95120 " href="{% ifnotequal number.url None %} {{number.url}} {%endifnotequal%} " target="_blank " tabindex="0 " data-toggle="popover " data-html="true " data-placement="auto
+                        " data-content="{{number.text}} ">
+                                  {{number.title}}</a>
+                                <h3></h3>
+                                <small class="text-center ">By: {{ number.by }} | Rating: {{ number.score }} | Created: {{number.time}} | Comments: {{number.kids}}</small>
+                                <h3></h3>
+                                <p class="text-center ">
+                                    <a href="{% url 'stories:listcomment' number.id %} ">
+                                        {%ifequal number.kids None %}
+                                        <button type="button " class="btn btn-primary " disabled>  Comments</mark></button>
+                                        {%else%}
+                                        <button type="button " class="btn btn-primary ">  Comments</mark></button>{%endifequal%}
+
+                                    </a>
+                                </p>
+                                {%endifequal%}
+                            </li> {% ifequal number.type 'comment' %}
+                            <li style="padding: 3px 0 0px 0; border-bottom: 1px solid #eeeded " class=" ">
+                                <h5 class="text-left hidden-xs " style="font-weight: bold " font-weight="normal " color="#999999 ">{%with val=page_obj.number|sub:1%}{{numbers|length| mul:val |addition:forloop.counter}}{% endwith %}</h5>
+                                <a class="one-line-ellipsis " style="color: #e60707a1 " target="_blank " tabindex="0 " data-toggle="popover " data-html="true " data-placement="auto " data-content="{{number.text}} ">
+                                    {{number.type}}</a>
+                                <small class="text-center ">By: {{ number.by }} |  Created: {{number.time}} | Parent: {{number.parent}}</small> {%endifequal%}
+                            </li> {% ifequal number.type 'job' %}
+                            <li style="padding: 3px 0 0px 0; border-bottom: 1px solid #eeeded " class=" ">
+                                <h5 class="text-left hidden-xs " style="font-weight: bold " font-weight="normal " color="#999999 ">{%with val=page_obj.number|sub:1%}{{numbers|length| mul:val |addition:forloop.counter}}{% endwith %}</h5>
+                                <a class="one-line-ellipsis " style="color: #c02d2dc5 " href="{{ number.url }} " target="_blank " tabindex="0 " data-toggle="popover " data-html="true " data-placement="auto " data-content="{{number.text}} ">
+                                  {{number.title}}</a>
+                                <small class="text-center ">By: {{ number.by }} | Created: {{number.time}}</small> {%endifequal%}
+                            </li>
+                            {%endfor%}
+                    </ul>
+
+                    {% if page_obj.has_next %}
+
+                    <p style="text-align:center "><a class="infinite-more-link " href="?page={{ page_obj.next_page_number }} ">Load More</a></p> {% endif %} {% if numbers.has_next %}
+                    <p style="text-align:center "></p><a class="infinite-more-link " href="?page={{ numbers.next_page_number }} ">Load More</a></p> {% endif %}
+                    <ul class="pagination justify-content-center my-5 ">
+                        {% if numbers.has_previous %}
+                        <!-- 'First' and 'Previous' Buttons -->
+                        <li class="page-item ">
+                            <a class="page-link " href="?page=1 ">|&lt; First</a>
+                        </li>
+                        <li class="page-item ">
+                            <a class="page-link " href="?page={{ numbers.previous_page_number }} ">&lt; Previous</a>
+                        </li>
+                        {% endif %}
+
+                    </ul>
+                    <ul class="pagination justify-content-center my-5 ">
+                        {% if page_obj.has_previous %}
+                        <!-- 'First' and 'Previous' Buttons -->
+                        <li class="page-item ">
+                            <a class="page-link " href="?page=1 ">|&lt; First</a>
+                        </li>
+                        <li class="page-item ">
+                            <a class="page-link " href="?page={{ page_obj.previous_page_number }} ">&lt; Previous</a>
+                        </li>
+                        {% endif %}
+
+                        <!-- 'Next' and 'Last' Buttons -->
+                        {% if numbers.has_next %}
+                        <li class="page-item ">
+                            <a class="page-link " href="?page={{ numbers.next_page_number }} ">Next &gt;</a>
+                        </li>
+                        <li class="page-item ">
+                            <a class="page-link " href="?page={{ numbers.paginator.num_pages }} ">Last &gt;|</a>
+                        </li>
+
+                        {% endif %}
+                    </ul>
+                    {% if page_obj.has_next %}
+                    <p class="text-center " style="font-weight: bold; ">Page : {{page_obj.number}}</p>{%endif%} {% if numbers.has_next %}
+                    <p class="text-center " style="font-weight: bold; ">Page : {{numbers.number}}</p>{%endif%}
+
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
+    <br>
+    <script>
+        (function() {
+            var is_touch_device = ("ontouchstart " in window) || window.DocumentTouch && document instanceof DocumentTouch;
+            $('[data-content]').each(function(i, el) {
+                if (is_touch_device) {
+                    $(el).attr('href', 'javascript:;');
+                } else {
+                    $(el).attr('data-content', $(el).attr('data-content').split('<div class="read-article ">')[0]);
+                }
+            });
+            $('[data-toggle="popover "]').popover({
+                trigger: is_touch_device ? "focus " : "hover "
+            });
+        })();
+    </script>
+    <script>
+        $('.show-more-button').click(function() {
+            $(this).closest('ol').find('li').removeClass('hidden');
+            $(this).closest('li').remove();
+        });
+        $('#shareModal').on('show.bs.modal', function(e) {
+            var shareUrl = $(e.relatedTarget).data('share_url');
+            $(this).find('#modal-url').val(shareUrl);
+        });
+        var clip = new Clipboard('.btn-copy');
+        $btnCopy = $('.btn-copy');
+        clip.on('success', function(e) {
+            $btnCopy.attr('disabled', true);
+            $btnCopy.text('Copied!');
+            $btnCopy.removeClass('btn-primary').addClass('btn-success');
+            setTimeout(function() {
+                $btnCopy.text('Copy');
+                $btnCopy.attr('disabled', false);
+                $btnCopy.removeClass('btn-success').addClass('btn-primary');
+            }, 2000);
+        });
+    </script>
+    {%endblock%}
 
-
-        {% if page_obj.has_next %}
-        <p><br><a class="infinite-more-link " href="?page={{ page_obj.next_page_number }} ">More</a> {% endif %} {% if numbers.has_next %}</div>
-    </p>
-    <p><br><a class="infinite-more-link " href="?page={{ numbers.next_page_number }} ">More</a> </div>{% endif %} {% endblock %}
+</body>
