@@ -134,6 +134,13 @@
     $(window).on('load', function() {
         setTimeout(removeLoader, 2000); //wait for page load PLUS two seconds.
     });
+
+    function removeLoader() {
+        $("#loadingDiv").fadeOut(500, function() {
+            // fadeOut complete. Remove the loading div
+            $("#loadingDiv").remove(); //makes page more lightweight 
+        });
+    }
 </script>
 
 <script>
@@ -164,16 +171,7 @@
 </script>
 
 <body class="Story">
-    {%if numbers|length > 0 %}
-    <script>
-        function removeLoader() {
-            $("#loadingDiv").fadeOut(500, function() {
-                // fadeOut complete. Remove the loading div
-                $("#loadingDiv").remove(); //makes page more lightweight 
-            });
-        }
-    </script>
-    {%endif%}
+
     <div class="navbar navbar-default navbar-fixed-top" role="navigation">
         <div class="container">
             <div class="navbar-header">
