@@ -8,9 +8,10 @@
  6. Navigate into the project directory via terminal (newsaggregator directory should be your root directory).
  7. Run make Migrations on hackernews_engine app using command "python manage.py makemigations hackernews_engine"
  8. Run Migrations with command "python manage.py migrate".
- 9. Enter https://127.0.0.1:8000 to access webpage. Navigate through the buttons on the page.
- 10. You can hover over items to view thier text.
- 11. The default home page is the New items.
+ 9. Start server with command "python manage.py runserver --noreload"
+ 10. Enter https://127.0.0.1:8000 to access webpage. Navigate through the buttons on the page.
+ 11. You can hover over items to view thier text.
+ 12. The default home page is the New items.
 
  Note:
     At first, running the page takes a while(<=2minutes) to load since the database is empty and has to be populated.
