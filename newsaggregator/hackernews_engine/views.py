@@ -52,19 +52,19 @@ def get_loader(request,source):
 
 
 #helpers
-def get_response():
-    while not (cache.get('triggertop') and cache.get('triggernew') and cache.get('triggerjob')) :
-        time.sleep(5)
-        pass
+# def get_response():
+#     while not (cache.get('triggertop') and cache.get('triggernew') and cache.get('triggerjob')) :
+#         time.sleep(5)
+#         pass
          
 
 def initialize(source):
     cached_ids = cache.get("cached_{source}_ids".format(source=source))
     db_ids = Items.objects.values_list('id',flat=True)
     #loop = asyncio.get_event_loop()
-    if not db_ids.exists():
-        wait_sync = sync_to_async(get_response(),thread_sensitive=True)
-        #loop.create_task(wait_sync())
+    # if not db_ids.exists():
+    #     wait_sync = sync_to_async(get_response(),thread_sensitive=True)
+    #     #loop.create_task(wait_sync())
     if cached_ids is None and db_ids.exists():
        if source is 'top':
            items = Items.objects.filter(top=True).all().order_by('date_fetched')
@@ -77,6 +77,8 @@ def initialize(source):
     if cache is not None and db_ids.exists():
         items = [Items.objects.get(id=id) for id in cached_ids]
         return items
+
+    return []    
 
 
 class SearchView(ListView):

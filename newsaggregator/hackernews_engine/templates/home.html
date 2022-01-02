@@ -44,6 +44,7 @@
 
 <body class="Topics homepage">
 
+
     <style>
         h3 {
             margin-top: 0px;
@@ -99,6 +100,9 @@
 
 
                 <div class="infinite-container ">
+                    <div class="loading" style="display: none;">
+                        Loading...
+                    </div>
                     {% for number in numbers %}
                     <ul style="list-style: none; padding-left: 0px; ">
                         <div class="infinite-item ">
@@ -182,6 +186,8 @@
                     {% if page_obj.has_next %}
                     <p class="text-center " style="font-weight: bold; ">Page : {{page_obj.number}}</p>{%endif%} {% if numbers.has_next %}
                     <p class="text-center " style="font-weight: bold; ">Page : {{numbers.number}}</p>{%endif%}
+
+
 
                     </div>
                 </div>
