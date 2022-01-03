@@ -2,10 +2,10 @@
 <hr/>
 
 ### STARTING UP PROJECT
-- Get python installed
+- Get python installed.
 
 - Check python version
-In the project directory, you can run:
+###### In the project directory, you can run:
 ###### `python--version" : "check python version"`,
 
 - Set up Postgresql Server on your Computer and Get the service Running.
@@ -16,21 +16,21 @@ In the project directory, you can run:
 
 - A Virtual Machine was shipped with this project Activate it with  on Windows with,
 ###### `path_to_project_directory/hackernews/news/Scripts/activate.bat` 
-"Start virtual machine on windows"
+###### "Start virtual machine on windows"
 
 - Or create a virtual environment 
 ###### `pip install venv` 
 "Install virtualmachine package"
 Navigate to your desired virtual environment path and run command
 ###### `venv nameofvirtualenv`
-"Create new virtual machine"
+###### "Create new virtual machine"
 
 - Navigate into the project directory via terminal (newsaggregator directory should be your root directory).
 
 - If you created a new virtual machine run command 
 ###### `pip install -r requirements.txt`
-"Required libaries installed"
-This will install the the neccesarry libaries needed to run the application on your machine. 
+###### "Required libaries installed"
+###### This will install the the neccesarry libaries needed to run the application on your machine. 
 
 - Run make Migrations on hackernews_engine app using command 
 ###### `python manage.py makemigations`
@@ -43,8 +43,8 @@ This will install the the neccesarry libaries needed to run the application on y
 The app is built using `Django` so this command Runs the app in Development mode. Open [http://localhost:8000](http://localhost:8000) to view it in the browser. The page will reload if you make edits. 
 To turn this feature off use the --noreload 
 ###### `python manage.py runserver --noreload`
-"Python-script starts with noreload"
-You will also see any lint errors in the console.
+###### "Python-script starts with noreload"
+###### You will also see any lint errors in the console.
 
 - You can hover over items on the webpage to view thier text.
 
