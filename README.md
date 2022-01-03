@@ -1,6 +1,8 @@
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/derhnyel/feedreaders)<h3 align="center">FeedReaders</h1>
+
+<h3 align="center">FeedReaders</h1>
 <hr/>
 
+           [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/derhnyel/feedreaders)
 ### Links
 
 - [Repo](https://github.com/derhnyel/feedreaders "feedreaders Repo")
@@ -17,11 +19,12 @@
 
 - Set up Postgresql Server on your Computer and Get the service Running.
  
-- Create a database with the name hackernewsdb.
+- Create a database with the name hackernewsdb. 
+##### "You could use any other name but remember to update the DATABASE in the projects settings.py file to that name."
 
 - Connect to the Postgres database.
 
-- A Virtual Machine was shipped with this project Activate it with  on Windows with,
+- A Virtual Machine was shipped with this project Activate on Windows with ,
 ###### `path_to_project_directory/hackernews/news/Scripts/activate.bat` 
 ###### "Start virtual machine on windows"
 
@@ -56,7 +59,6 @@ Navigate to your desired virtual environment path and run command
 - You can hover over items on the webpage to view thier text.
 
 - The default home page is the New stories page.
-
 #### NOTE
     At first, running the page takes a while(around 2minutes) to load since the database is empty and has to be populated.
     Also comments are fetched and stored in the database after all other tasks are done , so it might take a while for it to appear on the webpage.
@@ -64,7 +66,6 @@ Navigate to your desired virtual environment path and run command
     I would advice aganst using the django default sql database because it has lock that makes it process one request at a time thereby preventing concurrent requests.   
 
 ### MAKING API REQUESTS
-
 #### Responses
 
 Many API endpoints return the JSON representation of the resources created or edited. However, if an invalid request is submitted, or some other error occurs, Feedreaders returns a JSON response in the following format:
@@ -76,15 +77,12 @@ Many API endpoints return the JSON representation of the resources created or ed
   "result"    : string
 }
 ```
-
 The `error` attribute contains a message commonly used to indicate errors or, in the case of deleting a resource, success that the resource was properly deleted.
 
 The `success` attribute describes if the transaction was successful or not.
 
 The `result` attribute contains any other metadata associated with the response. This will be an escaped string containing JSON data.
-
 #### Status Codes
-
 Feedreaders returns the following status codes in its API:
 
 | Status Code | Description |
@@ -94,9 +92,6 @@ Feedreaders returns the following status codes in its API:
 | 400 | `BAD REQUEST` |
 | 404 | `NOT FOUND` |
 | 500 | `INTERNAL SERVER ERROR` |
-
-
-
 
 #### API Calls Locally
 
@@ -114,13 +109,9 @@ Query the Api  [http://localhost:8000/api](http://localhost:8000/api) with a `PO
 Query the Api [http://localhost:8000/api/<pk>](http://localhost:8000/api/<pk>) with a `PUT` request with the primary key in the url and a payload `{ title:"your_title",url:"your_url",text:"your_text"}` to modify that particular record.
 - **DELETE**
 Query the Api [http://localhost:8000/api/<pk>](http://localhost:8000/api/<pk>) with a `DELETE` request with the primary key in the url to delete a record from the database.
-
 #### NOTE 
     The API Requests `PUT`,`UPDATE`,`DELETE` only works for items created using the API.
     For Making Live API request use https://feedreaders.herokuapp.com/api
-
-
-
 
 ### Screenshots
 
