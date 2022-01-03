@@ -7,7 +7,6 @@ from rest_framework.response import Response
 from django.shortcuts import render,redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.cache import cache
-from asgiref.sync import sync_to_async
 from django.views.generic.list import ListView
 from itertools import chain
 from django.template import RequestContext
@@ -25,10 +24,10 @@ def NewStoriesView(request):
     return render(request,'home.html',{'numbers': pages_data,})
 
 def merge_models(source=None,title=None):
-    if title != None:
+    if title is not None:
         posts = Posts.objects.filter(title=title).all().order_by('-time')
         items = Items.objects.filter(title=title).all().order_by('-time')
-    elif source != None:
+    elif source is not None:
          posts = Posts.objects.filter(source=source).all().order_by('-time')
          items = Items.objects.filter(source=source).all().order_by('-time')   
 
@@ -57,8 +56,8 @@ def initialize(source):
     cached_ids = cache.get("cached_{source}_ids".format(source=source))
     db_ids = Items.objects.values_list('id',flat=True)
     #loop = asyncio.get_event_loop()
-    if cached_ids == None and db_ids.exists():
-       if source == 'top':
+    if cached_ids is None and db_ids.exists():
+       if source is 'top':
            items = Items.objects.filter(top=True).all().order_by('date_fetched')
            return items
        elif source in ['comment','new','job']:
@@ -66,7 +65,7 @@ def initialize(source):
            #items = merge_models(source=source)
            return items
            
-    if cache != None and db_ids.exists():
+    if cache is not None and db_ids.exists():
         items = [Items.objects.get(id=id) for id in cached_ids]
         return items
 
@@ -142,7 +141,7 @@ class PostView(APIView):
     """
     def get(self, request, format=None):
         filter_param =request.query_params.get('filter')
-        if filter_param != None:
+        if filter_param is not None:
             try:
                 posts = Posts.objects.filter(type=filter_param)
                 items = Items.objects.filter(type=filter_param)

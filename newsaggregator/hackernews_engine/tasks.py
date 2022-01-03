@@ -34,18 +34,18 @@ def fetch_items(fetched_ids,cache_key,source,db_ids):
 
    
 
-    if cached_ids == None and db_ids.exists(): #web app restarted and Database has objects or a cache hot reload
+    if cached_ids is None and db_ids.exists(): #web app restarted and Database has objects or a cache hot reload
         new_ids=disimilar_elements(db_ids,fetched_ids)#get ids in fetched_ids that are not in database_ids
         #new_ids = purge_similar_items(new_ids,db_ids,source)
         new_items= [hacker_news.get_item(_id) for _id in new_ids]# get item list by id from api 
         #cache.set('count'+source,1) #set count to 1    
         return new_items,fetched_ids
     
-    elif not db_ids.exists() and cached_ids == None: #At first Start .. Initialization of db
+    elif not db_ids.exists() and cached_ids is None: #At first Start .. Initialization of db
         items = [hacker_news.get_item(_id) for _id in fetched_ids] #fetch items using fetched ids from api
         return items,fetched_ids
     
-    elif cached_ids != None: #cache contains previous fetched results
+    elif cached_ids is not None: #cache contains previous fetched results
         new_ids = disimilar_elements(cached_ids,fetched_ids)#find new ids in fetched ids not in cached ids
         new_ids = purge_similar_items(new_ids,db_ids,source) #remove items added to database in the past from cache
         new_items = [hacker_news.get_item(_id) for _id in new_ids] #get items
@@ -57,10 +57,10 @@ def create_pk(new_items,fetched_ids,source):
     for item in  new_items:
       try:
         if item['type'] not in ['unknown',None]:
-            if source != 'comment':
+            if source is not 'comment':
                 # if source is 'new':
                 #     Items.objects.create(id=item['id'],source=source,new=True)#create each model object instance
-                if source == 'top':
+                if source is 'top':
                     Items.objects.create(id=item['id'],top=True)
                 if source in ['job','comment','new']:
                     Items.objects.create(id=item['id'],source=source)        
@@ -87,25 +87,24 @@ def update_items(source,id_list=None):
     print('Stored Database IDS {source} : {ids} '.format(source=source, ids=len(db_ids)))
     #get top or new stories
     comments=[]
-    # if len(db_ids)<800:
-    #     slice_idx=100
-    # elif len(db_ids)>800 and len(db_ids)<1500:
-    #     slice_idx=200
-    # elif len(db_ids)>1500 and len(db_ids)<2200:
-    #     slice_idx=300
-    # elif len(db_ids)>2200 and len(db_ids)<3000:
-    #     slice_idx=400
-    # else:
-    #     slice_idx=500
-    slice_idx=100
+    if len(db_ids)<800:
+        slice_idx=100
+    elif len(db_ids)>800 and len(db_ids)<1500:
+        slice_idx=200
+    elif len(db_ids)>1500 and len(db_ids)<2200:
+        slice_idx=300
+    elif len(db_ids)>2200 and len(db_ids)<3000:
+        slice_idx=400
+    else:
+        slice_idx=500
         
-    if source == 'top':
+    if source is 'top':
         fetched_ids = hacker_news.get_top_stories()[:slice_idx] 
-    elif source == 'new':
+    elif source is 'new':
         fetched_ids=hacker_news.get_new_stories()[:slice_idx] 
-    elif source == 'job':
+    elif source is 'job':
         fetched_ids= hacker_news.get_jobs()
-    elif source == 'comment':
+    elif source is 'comment':
         fetched_ids = id_list
     cache_key = "cached_{source}_ids".format(source=source)#set cache key to top or new
     news_items,fetched_ids = fetch_items(fetched_ids,cache_key,source,db_ids) #if source is not 'comment' else (fetched_ids,id_list)#fetch new items
@@ -115,7 +114,7 @@ def update_items(source,id_list=None):
         item_id = item['id']    
         for key in item:   
           try:  
-            if key != 'id' and item['type'] not in ['unknown',None]:
+            if key is not 'id' and item['type'] not in ['unknown',None]:
                 if key == 'kids' and key not in [None,[]] and source not in ['comment','job']:
                     comment_list=item['kids']
                     comments = comments+comment_list[:2] if len(comment_list) > 2 else comments+comment_list                    

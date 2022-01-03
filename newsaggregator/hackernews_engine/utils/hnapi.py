@@ -23,7 +23,7 @@ class hackernews_engine():
     def __init__(self, timeout=None):
         """Initialize hackernews engine class with hackernews api url and timeout for processing api call"""
         self.url = 'https://hacker-news.firebaseio.com/v0/{url}'
-        self.timeout = 5 if timeout == None else timeout
+        self.timeout = 5 if timeout is None else timeout
         self.ua = UserAgent()     
     def request(self, method, url):
         """Function to send POST AND GET request to API and return API's response """
@@ -36,7 +36,7 @@ class hackernews_engine():
         """Function to Get Item By ID"""
         url = 'item/{item_unique_id}.json'.format(item_unique_id=item_unique_id)
         api_response = self.request('GET', url) 
-        if api_response != None:
+        if api_response is not None:
             item = api_response.json() 
         else:
             return None
@@ -55,7 +55,7 @@ class hackernews_engine():
         """Function to Get User By ID"""
         url = 'user/{user_id}.json'.format(user_id=user_id)
         api_response = self.request('GET', url)
-        if api_response != None:
+        if api_response is not None:
            user = api_response.json() 
         else:
             return None
@@ -65,7 +65,7 @@ class hackernews_engine():
     def get_top_stories(self):
         """Function to get Top stories"""
         api_response = self.request('GET', 'topstories.json')
-        if api_response != None:
+        if api_response is not None:
            stories = api_response.json() 
         else:
             return None
@@ -73,7 +73,7 @@ class hackernews_engine():
     def get_new_stories(self):
         """Function to get New stories"""
         api_response = self.request('GET', 'newstories.json')
-        if api_response != None:
+        if api_response is not None:
            stories = api_response.json() 
         else:
             return None
@@ -84,7 +84,7 @@ class hackernews_engine():
     def get_max_item(self):
         """Function to get max_item """
         api_response = self.request('GET', 'maxitem.json')
-        if api_response != None:
+        if api_response is not None:
            max_item = api_response.json() 
         else:
             return None
@@ -93,7 +93,7 @@ class hackernews_engine():
     def get_updates(self):
         """Function to get recent updates and changes"""
         api_response = self.request('GET', 'updates.json')
-        if api_response != None:
+        if api_response is not None:
            update = api_response.json() 
         else:
             return None
@@ -107,7 +107,7 @@ class hackernews_engine():
              return None  
     def get_jobs(self): 
         api_response = self.request('GET', 'jobstories.json')
-        if api_response != None:
+        if api_response is not None:
            jobs= api_response.json() 
         else:
             return None
