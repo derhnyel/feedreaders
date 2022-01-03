@@ -1,8 +1,9 @@
 
+
 <h3 align="center">FeedReaders</h1>
 <hr/>
 
-           [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/derhnyel/feedreaders)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/derhnyel/feedreaders)
 ### Links
 
 - [Repo](https://github.com/derhnyel/feedreaders "feedreaders Repo")
