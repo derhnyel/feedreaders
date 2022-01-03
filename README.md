@@ -50,15 +50,15 @@ You will also see any lint errors in the console.
 
 - The default home page is the New stories page.
 
-###### NOTE
+#### NOTE
     At first, running the page takes a while(around 2minutes) to load since the database is empty and has to be populated.
     Also comments are fetched and stored in the database after all other tasks are done , so it might take a while for it to appear on the webpage.
     After the initialization all these do not happen, the page loads normally with all resources available on it. 
     I would advice aganst using the django default sql database because it has lock that makes it process one request at a time thierby preventing concurrent requests.   
 
-##### MAKING API REQUESTS
+### MAKING API REQUESTS
 
-###### Responses
+#### Responses
 
 Many API endpoints return the JSON representation of the resources created or edited. However, if an invalid request is submitted, or some other error occurs, Feedreaders returns a JSON response in the following format:
 
