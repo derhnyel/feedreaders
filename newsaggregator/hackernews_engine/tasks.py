@@ -81,8 +81,8 @@ def rearrange_db(_list):
 def update_items(source,id_list=None):
     """Save items to database"""
     print('Starting task to fetch and store {source} items...'.format(source=source))
-    cache.delete('trigger{}'.format(source))
-    cache.set('trigger{}'.format(source),False)
+    # cache.delete('trigger{}'.format(source))
+    # cache.set('trigger{}'.format(source),False)
     db_ids = Items.objects.values_list('id',flat=True) # get database ids
     print('Stored Database IDS {source} : {ids} '.format(source=source, ids=len(db_ids)))
     #get top or new stories
@@ -130,7 +130,7 @@ def update_items(source,id_list=None):
                 pass               
     [query.save() for query in Items.objects.all()] #save all created objects
     print('Done with {}'.format(source))
-    cache.set('trigger{}'.format(source),True)
+    # cache.set('trigger{}'.format(source),True)
     if source in ['job','comment']:
         return True 
     if source in ['top']:
