@@ -118,7 +118,7 @@ def update_items(source,id_list=None):
             if key is not 'id' and item['type'] not in ['unknown',None]:
                 if key == 'kids' and key not in [None,[]] and source not in ['comment','job']:
                     comment_list=item['kids']
-                    comments = comments+comment_list[:10] if len(comment_list) > 10 else comments+comment_list                    
+                    comments = comments+comment_list[:2] if len(comment_list) > 2 else comments+comment_list                    
                     kwargs = {key:len(item[key])}
                     Items.objects.filter(pk=item_id).update(**kwargs)
                 if key != 'kids' or key != 'parts':
