@@ -34,14 +34,14 @@ def fetch_items(fetched_ids,cache_key,source,db_ids):
 
    
 
-    if cached_ids == None and db_ids.exists(): #web app restarted and Database has objects or a cache hot reload
+    if cached_ids == None and len(list(db_ids))>0: #web app restarted and Database has objects or a cache hot reload
         new_ids=disimilar_elements(db_ids,fetched_ids)#get ids in fetched_ids that are not in database_ids
         #new_ids = purge_similar_items(new_ids,db_ids,source)
         new_items= [hacker_news.get_item(_id) for _id in new_ids]# get item list by id from api 
         #cache.set('count'+source,1) #set count to 1    
         return new_items,fetched_ids
     
-    elif not db_ids.exists() and cached_ids == None: #At first Start .. Initialization of db
+    elif len(list(db_ids)) ==0 and cached_ids == None: #At first Start .. Initialization of db
         items = [hacker_news.get_item(_id) for _id in fetched_ids] #fetch items using fetched ids from api
         return items,fetched_ids
     

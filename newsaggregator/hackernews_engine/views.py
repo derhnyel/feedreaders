@@ -56,7 +56,7 @@ def initialize(source):
     cached_ids = cache.get("cached_{source}_ids".format(source=source))
     db_ids = Items.objects.values_list('id',flat=True)
     #loop = asyncio.get_event_loop()
-    if cached_ids == None and db_ids.exists():
+    if cached_ids == None and len(list(db_ids)) > 0:
        if source == 'top':
            items = Items.objects.filter(top=True).all().order_by('date_fetched')
            return items
@@ -65,7 +65,7 @@ def initialize(source):
            #items = merge_models(source=source)
            return items
            
-    if cache != None and db_ids.exists():
+    if cache != None and len(list(db_ids)) > 0:
         items=[]
         objects=Items.objects.all()
         for _id in cached_ids:
