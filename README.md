@@ -96,7 +96,7 @@ Feedreaders returns the following status codes in its API:
 - [Live](https://feedreaders.herokuapp.com "Live View")
 
 
-#### API CallS
+#### API Calls LOcally
 
 - Interact with the rest_api from browser using [http://localhost:8000/api](http://localhost:8000/api)
 - **GET** 
@@ -115,6 +115,7 @@ Query the Api [http://localhost:8000/api/<pk>](http://localhost:8000/api/<pk>) w
 
 #### NOTE 
     The API Requests `PUT`,`UPDATE`,`DELETE` only works for items created using the API.
+    For Making Live API request use https://feedreaders.herokuapp.com/api
 
 
 
@@ -122,6 +123,7 @@ Query the Api [http://localhost:8000/api/<pk>](http://localhost:8000/api/<pk>) w
 ### Screenshots
 
 ![Home Page](/screenshots/1.png "Home Page")
-
+![Comments Page](/screenshots/2.png "Comments Page")
+![Comments Page](/screenshots/3.png "Comments Page")
 
 Give a ⭐️ if you like this project!
