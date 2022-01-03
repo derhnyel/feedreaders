@@ -2,7 +2,7 @@
 from datetime import datetime
 import requests
 import time
-from fake_useragent import UserAgent
+# from fake_useragent import UserAgent
 
 
 class Item():
@@ -23,13 +23,12 @@ class hackernews_engine():
     def __init__(self, timeout=None):
         """Initialize hackernews engine class with hackernews api url and timeout for processing api call"""
         self.url = 'https://hacker-news.firebaseio.com/v0/{url}'
-        self.timeout = 5 if timeout is None else timeout
-        self.ua = UserAgent()     
+        self.timeout = 5 if timeout is None else timeout  
     def request(self, method, url):
         """Function to send POST AND GET request to API and return API's response """
         time.sleep(0.01) #prevents api from flagging request as DDos attack
         url = self.url.format(url=url) #format url path 
-        response=self.handle_exceptions(requests.request(method, url, headers={"User-Agent": self.ua.random}, timeout=self.timeout))
+        response=self.handle_exceptions(requests.request(method, url, timeout=self.timeout))
         return  response#return api response
 
     def get_item(self, item_unique_id):
