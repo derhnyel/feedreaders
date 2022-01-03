@@ -28,9 +28,9 @@ def purge_similar_items(list1,list2,source):
 
 def fetch_items(fetched_ids,cache_key,source,db_ids):
     """Perform checks and Fetch ids and items from Api"""
-    print('Fetched ids {source} : {ids}'.format(source=source,ids=len(fetched_ids) if fetched_ids != None else None ))    
+    print('Fetched ids {source} : {ids}'.format(source=source,ids=len(fetched_ids) if fetched_ids is not None else None ))    
     cached_ids = cache.get(cache_key) #get cached ids
-    print('Cached ids {source} : {ids}'.format(source=source,ids=len(cached_ids) if cached_ids !=  None else None ))
+    print('Cached ids {source} : {ids}'.format(source=source,ids=len(cached_ids) if cached_ids is not None else None ))
 
    
 
@@ -41,7 +41,7 @@ def fetch_items(fetched_ids,cache_key,source,db_ids):
         #cache.set('count'+source,1) #set count to 1    
         return new_items,fetched_ids
     
-    elif not db_ids.exists() and cached_ids== None: #At first Start .. Initialization of db
+    elif not db_ids.exists() and cached_ids == None: #At first Start .. Initialization of db
         items = [hacker_news.get_item(_id) for _id in fetched_ids] #fetch items using fetched ids from api
         return items,fetched_ids
     

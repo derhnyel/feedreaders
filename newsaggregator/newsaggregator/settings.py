@@ -92,7 +92,7 @@ WSGI_APPLICATION = 'newsaggregator.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'hackernewsdb',
+        # 'NAME': 'hackernewsdb',
         # 'USER':'postgres',
         # 'PASSWORD':'superuser',
         # 'HOST':'localhost',
