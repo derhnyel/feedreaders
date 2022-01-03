@@ -87,16 +87,17 @@ def update_items(source,id_list=None):
     print('Stored Database IDS {source} : {ids} '.format(source=source, ids=len(db_ids)))
     #get top or new stories
     comments=[]
-    if len(db_ids)<800:
-        slice_idx=100
-    elif len(db_ids)>800 and len(db_ids)<1500:
-        slice_idx=200
-    elif len(db_ids)>1500 and len(db_ids)<2200:
-        slice_idx=300
-    elif len(db_ids)>2200 and len(db_ids)<3000:
-        slice_idx=400
-    else:
-        slice_idx=500
+    # if len(db_ids)<800:
+    #     slice_idx=100
+    # elif len(db_ids)>800 and len(db_ids)<1500:
+    #     slice_idx=200
+    # elif len(db_ids)>1500 and len(db_ids)<2200:
+    #     slice_idx=300
+    # elif len(db_ids)>2200 and len(db_ids)<3000:
+    #     slice_idx=400
+    # else:
+    #     slice_idx=500
+    slice_idx=100
         
     if source is 'top':
         fetched_ids = hacker_news.get_top_stories()[:slice_idx] 
