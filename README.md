@@ -6,7 +6,8 @@
 
 - Check python version
 ###### In the project directory, you can run:
-###### `python--version" : "check python version"`,
+###### `python--version` 
+###### "check python version"
 
 - Set up Postgresql Server on your Computer and Get the service Running.
  
@@ -40,8 +41,8 @@ Navigate to your desired virtual environment path and run command
 
 - Start server 
 ###### `python manage.py runserver" : "python-scripts start"`,
-The app is built using `Django` so this command Runs the app in Development mode. Open [http://localhost:8000](http://localhost:8000) to view it in the browser. The page will reload if you make edits. 
-To turn this feature off use the --noreload 
+###### The app is built using `Django` so this command Runs the app in Development mode. Open [http://localhost:8000](http://localhost:8000) to view it in the browser. The page will reload if you make edits. 
+###### To turn this feature off use the --noreload 
 ###### `python manage.py runserver --noreload`
 ###### "Python-script starts with noreload"
 ###### You will also see any lint errors in the console.
