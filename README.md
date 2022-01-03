@@ -96,7 +96,7 @@ Feedreaders returns the following status codes in its API:
 - [Live](https://feedreaders.herokuapp.com "Live View")
 
 
-#### API Calls LOcally
+#### API Calls Locally
 
 - Interact with the rest_api from browser using [http://localhost:8000/api](http://localhost:8000/api)
 - **GET** 
