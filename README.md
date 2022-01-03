@@ -61,7 +61,7 @@ Navigate to your desired virtual environment path and run command
     At first, running the page takes a while(around 2minutes) to load since the database is empty and has to be populated.
     Also comments are fetched and stored in the database after all other tasks are done , so it might take a while for it to appear on the webpage.
     After the initialization all these do not happen, the page loads normally with all resources available on it. 
-    I would advice aganst using the django default sql database because it has lock that makes it process one request at a time thierby preventing concurrent requests.   
+    I would advice aganst using the django default sql database because it has lock that makes it process one request at a time thereby preventing concurrent requests.   
 
 ### MAKING API REQUESTS
 
