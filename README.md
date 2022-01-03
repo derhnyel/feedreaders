@@ -1,6 +1,12 @@
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/derhnyel/feedreaders)<h3 align="center">FeedReaders</h1>
 <hr/>
 
+### Links
+
+- [Repo](https://github.com/derhnyel/feedreaders "feedreaders Repo")
+
+- [Live](https://feedreaders.herokuapp.com "Live View")
+
 ### STARTING UP PROJECT
 - Get python installed.
 
@@ -89,11 +95,7 @@ Feedreaders returns the following status codes in its API:
 | 404 | `NOT FOUND` |
 | 500 | `INTERNAL SERVER ERROR` |
 
-#### Links
 
-- [Repo](https://github.com/derhnyel/feedreaders "feedreaders Repo")
-
-- [Live](https://feedreaders.herokuapp.com "Live View")
 
 
 #### API Calls Locally
