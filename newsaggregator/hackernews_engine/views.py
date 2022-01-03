@@ -17,17 +17,17 @@ def handler404(request):
     response.status_code = 404
     return response
 def index(request):
-    return redirect('stories:new_stories')
+    return redirect('stories:top_stories')
 
 def NewStoriesView(request):
     pages_data = get_loader(request,'new')
     return render(request,'home.html',{'numbers': pages_data,})
 
 def merge_models(source=None,title=None):
-    if title is not None:
+    if title != None:
         posts = Posts.objects.filter(title=title).all().order_by('-time')
         items = Items.objects.filter(title=title).all().order_by('-time')
-    elif source is not None:
+    elif source != None:
          posts = Posts.objects.filter(source=source).all().order_by('-time')
          items = Items.objects.filter(source=source).all().order_by('-time')   
 
@@ -56,8 +56,8 @@ def initialize(source):
     cached_ids = cache.get("cached_{source}_ids".format(source=source))
     db_ids = Items.objects.values_list('id',flat=True)
     #loop = asyncio.get_event_loop()
-    if cached_ids is None and db_ids.exists():
-       if source is 'top':
+    if cached_ids == None and db_ids.exists():
+       if source == 'top':
            items = Items.objects.filter(top=True).all().order_by('date_fetched')
            return items
        elif source in ['comment','new','job']:
@@ -65,8 +65,11 @@ def initialize(source):
            #items = merge_models(source=source)
            return items
            
-    if cache is not None and db_ids.exists():
-        items = [Items.objects.get(id=id) for id in cached_ids]
+    if cache != None and db_ids.exists():
+        items=[]
+        objects=Items.objects.all()
+        for _id in cached_ids:
+           items.append(objects.get(id=_id)) 
         return items
 
     return []    
