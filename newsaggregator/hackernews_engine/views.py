@@ -7,7 +7,6 @@ from rest_framework.response import Response
 from django.shortcuts import render,redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.cache import cache
-from asgiref.sync import sync_to_async
 from django.views.generic.list import ListView
 from itertools import chain
 from django.template import RequestContext
@@ -58,19 +57,26 @@ def initialize(source):
     db_ids = Items.objects.values_list('id',flat=True)
     #loop = asyncio.get_event_loop()
     if cached_ids is None and db_ids.exists():
-       if source is 'top':
+        if source == 'top':
            items = Items.objects.filter(top=True).all().order_by('date_fetched')
            return items
-       elif source in ['comment','new','job']:
-           items = Items.objects.filter(source=source).all().order_by('-time')
+        elif source in ['comment','job']:
+           items = Items.objects.filter(type=source).all().order_by('-time')
            #items = merge_models(source=source)
            return items
-           
-    if cache is not None and db_ids.exists():
+        elif source == 'new':
+           items = Items.objects.filter(type='story').all().order_by('-time')
+           return items 
+    elif cache is not None and db_ids.exists():
+        # items=[]
+        # objects=Items.objects.all()
+        # for _id in cached_ids:
+        #    items.append(objects.get(id=_id))
         items = [Items.objects.get(id=id) for id in cached_ids]
         return items
-
-    return []    
+    else:
+        return [] 
+           
 
 
 class SearchView(ListView):
@@ -127,8 +133,6 @@ class ListCommentView(ListView):
 
 class CommentView(ListView):
     model = Items
-    template_name = 'search.html'
-    context_object_name = 'all_search_results'
     paginate_by = 20
     context_object_name = 'numbers'
     template_name = 'home.html'

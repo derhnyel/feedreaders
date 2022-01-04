@@ -15,13 +15,13 @@
 
 - Check python version
 ###### In the project directory, you can run:
-###### `python--version` 
+###### `python --version` 
 ###### "check python version"
 
 - Set up Postgresql Server on your Computer and Get the service Running.
  
 - Create a database with the name hackernewsdb. 
-##### "You could use any other name but remember to update the DATABASE in the projects settings.py file to that name."
+###### "You could use any other name but remember to update the DATABASE in the projects settings.py file to that name."
 
 - Connect to the Postgres database.
 

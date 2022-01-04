@@ -56,19 +56,19 @@ def create_pk(new_items,fetched_ids,source):
     """Create model object instance for all new ids as primary key"""
     for item in  new_items:
       try:
-        if item['type'] not in ['unknown',None]:
-            if source is not 'comment':
-                # if source is 'new':
-                #     Items.objects.create(id=item['id'],source=source,new=True)#create each model object instance
-                if source is 'top':
+        if item['type'] != 'unknown' and item['type'] != None:
+            if source != 'comment':
+                if source == 'top':
                     Items.objects.create(id=item['id'],top=True)
-                if source in ['job','comment','new']:
+                if source in ['job','new']:
                     Items.objects.create(id=item['id'],source=source)        
             else:
-                Items.objects.create(id=item['id'],source=source,parent=item['parent'])    
-      except:
-          fetched_ids.remove(item['id'])
-    return fetched_ids    
+                Items.objects.create(id=item['id'],source=source,parent=item['parent'])
+        else:
+            fetched_ids.remove(item['id'])            
+      except Exception as e:
+          pass
+    return fetched_ids 
 
 
 def rearrange_db(_list):
@@ -81,8 +81,6 @@ def rearrange_db(_list):
 def update_items(source,id_list=None):
     """Save items to database"""
     print('Starting task to fetch and store {source} items...'.format(source=source))
-    cache.delete('trigger{}'.format(source))
-    cache.set('trigger{}'.format(source),False)
     db_ids = Items.objects.values_list('id',flat=True) # get database ids
     print('Stored Database IDS {source} : {ids} '.format(source=source, ids=len(db_ids)))
     #get top or new stories
@@ -120,17 +118,17 @@ def update_items(source,id_list=None):
                     comments = comments+comment_list[:10] if len(comment_list) > 10 else comments+comment_list                    
                     kwargs = {key:len(item[key])}
                     Items.objects.filter(pk=item_id).update(**kwargs)
-                if key != 'kids' or key != 'parts':
+                if key != 'kids' and key != 'parts':
                     kwargs = {key:item[key]}
                     Items.objects.filter(pk=item_id).update(**kwargs)
-            else:    
+            elif  key != 'id' and item['type'] in ['unknown',None]:    
                 fetched_ids.remove(item_id)
+                invalid_obj = Items.objects.get(pk=item_id)
+                invalid_obj.delete()
                 break
           except:
                 pass               
     [query.save() for query in Items.objects.all()] #save all created objects
-    print('Done with {}'.format(source))
-    cache.set('trigger{}'.format(source),True)
     if source in ['job','comment']:
         return True 
     if source in ['top']:
@@ -142,9 +140,6 @@ def update_items(source,id_list=None):
         cache.set(cache_key,fetched_ids) #set top or new to fetched in cache     
     if comments!=[]:         
         scheduler= BackgroundScheduler(timezone="Asia/Beirut")
-        # time_change = datetime.timedelta(seconds=5)
-        # time_now = datetime.now()
-        # time = time_now+time_change
         scheduler.add_job(update_items,args=['comment',comments],run_date=datetime.now(),id="FetchCommentsTaskid",misfire_grace_time=None,replace_existing=False)
         scheduler.start()
         
