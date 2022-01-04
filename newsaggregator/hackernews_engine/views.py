@@ -24,9 +24,11 @@ def NewStoriesView(request):
     return render(request,'home.html',{'numbers': pages_data,})
 
 def merge_models(source=None,title=None):
+    reg= r'^(.*?)query'
+    reg=reg.replace('query',title)
     if title is not None:
-        posts = Posts.objects.filter(title=title).all().order_by('-time')
-        items = Items.objects.filter(title=title).all().order_by('-time')
+        posts = Posts.objects.filter(title=reg).all().order_by('-time')
+        items = Items.objects.filter(title=reg).all().order_by('-time')
     elif source is not None:
          posts = Posts.objects.filter(source=source).all().order_by('-time')
          items = Items.objects.filter(source=source).all().order_by('-time')   
@@ -76,7 +78,7 @@ def initialize(source):
         return items
     else:
         return [] 
-           
+
 
 
 class SearchView(ListView):
@@ -196,5 +198,7 @@ class PostModify(APIView):
         post = self.get_object(pk)
         post.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 
 
