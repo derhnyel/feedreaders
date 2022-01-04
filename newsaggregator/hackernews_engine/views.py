@@ -66,18 +66,16 @@ def initialize(source):
            return items
        elif source == 'new':
            items = Items.objects.filter(type='story').all().order_by('-time')
-           return items
-
-           
-    if cache != None and len(list(db_ids)) > 0:
+           return items       
+    elif cache != None and len(list(db_ids)) > 0:
         # items=[]
         # objects=Items.objects.all()
         # for _id in cached_ids:
         #    items.append(objects.get(id=_id)) 
         items = [Items.objects.get(id=id) for id in cached_ids]
         return items
-
-    return []    
+    else:
+        return []    
 
 
 class SearchView(ListView):
