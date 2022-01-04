@@ -56,6 +56,7 @@ def create_pk(new_items,fetched_ids,source):
     """Create model object instance for all new ids as primary key"""
     for item in  new_items:
       try:
+        print("This is the items type while creating the item with pk {}".format(item['type']))  
         if item['type'] != 'unknown' and item['type'] != None:
             if source != 'comment':
                 if source == 'top':
@@ -105,8 +106,10 @@ def update_items(source,id_list=None):
     for item in news_items:#iterate and add other attributes present in item except id 
         item_id = item['id']    
         for key in item:   
-          try:  
+          try:
+            print('THis is the type before the check in the for loop{}'.format(item['type']))    
             if key != 'id' and item['type'] not in ['unknown',None]:
+                print('This is the type after the check in the for loop {}'.format(item['type']))
                 if key == 'kids' and key not in [None,[]] and source not in ['comment','job']:
                     comment_list=item['kids']
                     comments = comments+comment_list[:5] if len(comment_list) > 5 else comments+comment_list                    
@@ -116,11 +119,11 @@ def update_items(source,id_list=None):
                     kwargs = {key:item[key]}
                     print('This is the key pair kwargs {}'.format(kwargs)) 
                     Items.objects.filter(pk=item_id).update(**kwargs)    
-            else:    
+            elif  key != 'id' and item['type'] in ['unknown',None]:    
                 fetched_ids.remove(item_id)
                 j = Items.objects.get(pk=item_id)
                 j.delete()
-                print(source +'Has None / Unkwown item. It was Removed')
+                print(source +' Has None / Unkwown item. It was Removed')
                 break
           except Exception as e:
               print('This Error Happended while Creating the Key in {} .The Error is {}'.format(source, e))

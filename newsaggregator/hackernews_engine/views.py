@@ -53,6 +53,7 @@ def get_loader(request,source):
          
 
 def initialize(source):
+   try: 
     cached_ids = cache.get("cached_{source}_ids".format(source=source))
     db_ids = Items.objects.values_list('id',flat=True)
     #loop = asyncio.get_event_loop()
@@ -75,7 +76,19 @@ def initialize(source):
         items = [Items.objects.get(id=id) for id in cached_ids]
         return items
     else:
-        return []    
+        return [] 
+   except:
+       if source == 'top':
+           items = Items.objects.filter(top=True).all().order_by('date_fetched')
+           return items
+       elif source in ['comment','job']:
+           items = Items.objects.filter(type=source).all().order_by('-time')
+           #items = merge_models(source=source)
+           return items
+       elif source == 'new':
+           items = Items.objects.filter(type='story').all().order_by('-time')
+           return items
+
 
 
 class SearchView(ListView):
