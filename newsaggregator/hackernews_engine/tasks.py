@@ -65,8 +65,8 @@ def create_pk(new_items,fetched_ids,source):
                     Items.objects.create(id=item['id'],source=source)        
             else:
                 Items.objects.create(id=item['id'],source=source,parent=item['parent'])
-        else:
-            print(source +'Has None / Unkown item. It was Removed')
+        elif item['type'] in ['unknown',None]:
+            print(source +'Has None / Unknown item. It was Removed')
             fetched_ids.remove(item['id'])            
       except Exception as e:
           print('This Error Happended while Creating the Key in {} .The Error is {}'.format(source, e))
@@ -74,11 +74,16 @@ def create_pk(new_items,fetched_ids,source):
     return fetched_ids    
 
 
-def rearrange_db(_list):
-    try:
-        for id in _list.reverse():
-            Items.objects.filter(pk=id).update(date_fetched=datetime.now(),top=True)
-    except:pass        
+def rearrange_db(list_items):
+        list_items.reverse()
+        #print(list_items)
+        for id in list_items:
+          try:
+            Items.objects.filter(pk=id).update(date_fetched=datetime.now(),top=True)      
+          except Exception as e:
+              print('This Error Happended while Rearranging the Key in Top.The Error is {}'.format(e))
+        [query.save() for query in Items.objects.all()]        
+        
     
 
 def update_items(source,id_list=None):
@@ -91,7 +96,8 @@ def update_items(source,id_list=None):
     slice_idx=100
         
     if source == 'top':
-        fetched_ids = hacker_news.get_top_stories()[:slice_idx] 
+        fetched_ids = hacker_news.get_top_stories()[:slice_idx]
+        print(fetched_ids) 
     elif source == 'new':
         fetched_ids=hacker_news.get_new_stories()[:slice_idx] 
     elif source == 'job':
@@ -102,12 +108,14 @@ def update_items(source,id_list=None):
     news_items,fetched_ids = fetch_items(fetched_ids,cache_key,source,db_ids) #if source is not 'comment' else (fetched_ids,id_list)#fetch new items
     print('Recent {source} item(s): {item}'.format(source=source, item = len(news_items)))
     fetched_ids = create_pk(news_items,fetched_ids,source)
-
     for item in news_items:#iterate and add other attributes present in item except id 
-        item_id = item['id']    
+        item_id = item['id'] 
+        if source == 'top':
+            Items.objects.filter(pk=item_id).update(top=True)   
         for key in item:   
           try:
-            print('THis is the type before the check in the for loop{}'.format(item['type']))    
+            print('THis is the type before the check in the for loop {}'.format(item['type']))  
+
             if key != 'id' and item['type'] not in ['unknown',None]:
                 print('This is the type after the check in the for loop {}'.format(item['type']))
                 if key == 'kids' and key not in [None,[]] and source not in ['comment','job']:
@@ -126,25 +134,22 @@ def update_items(source,id_list=None):
                 print(source +' Has None / Unkwown item. It was Removed')
                 break
           except Exception as e:
-              print('This Error Happended while Creating the Key in {} .The Error is {}'.format(source, e))
+              print('This Error Happended while In the for loop  {} .The Error is {}'.format(source, e))
               pass               
     [query.save() for query in Items.objects.all()] #save all created objects
     print('Done with {}'.format(source))
     # cache.set('trigger{}'.format(source),True)
     if source in ['job','comment']:
         return True 
-    if source in ['top']:
-        rearrange_db(fetched_ids)
-        [query.save() for query in Items.objects.all()]
-        fetched_ids.reverse()
-    if source in ['top','new']:    
+    if source =='top':
         cache.delete(cache_key)
         cache.set(cache_key,fetched_ids) # set top or new to fetched in cache     
+        #print("This are the fetched ids before rearrange_db {}".format(fetched_ids))
+        rearrange_db(fetched_ids)
+        #fetched_ids.reverse()    
+
     if comments!=[]:         
         scheduler= BackgroundScheduler(timezone="Asia/Beirut")
-        # time_change = datetime.timedelta(seconds=5)
-        # time_now = datetime.now()
-        # time = time_now+time_change
         scheduler.add_job(update_items,args=['comment',comments],run_date=datetime.now(),id="FetchCommentsTaskid",misfire_grace_time=None,replace_existing=False)
         scheduler.start()
         #update_items('comment',id_list=comments)

@@ -10,10 +10,10 @@
         }
     });
 </script>
-<script type="text/javascript">
+<!-- <script type="text/javascript">
     setTimeout(function() {
         location.reload();
-    }, 3 * 60 * 1000);
+    }, 3 * 60 * 1000); -->
 </script>
 <script>
     $(document).ready(function() {
@@ -84,8 +84,8 @@
         <div class="row row2">
             <div class="col-xs-12">
                 {%with val=numbers.0%} {%ifequal val.top True%}
-                <h3 style="font-weight: bold;">Hackernews&#039;s Top Stories</h3>{%endifequal%} {%ifequal val.type 'comment'%}
-                <h3 style="font-weight: bold;">Hackernews&#039;s Comments</h3>{%endifequal%} {%ifequal val.type 'job'%}
+                <h3 style="font-weight: bold;">Hackernews&#039;s Top Stories</h3>{%endifequal%} {%ifnotequal val.parent None%}
+                <h3 style="font-weight: bold;">Hackernews&#039;s Comments</h3>{%endifnotequal%} {%ifequal val.type 'job'%}
                 <h3 style="font-weight: bold;">Hackernews&#039;s Jobs</h3>{%endifequal%} {%ifequal val.source 'new' %}
                 <h3 style="font-weight: bold;">Hackernews&#039;s New Stories</h3>{%endifequal%}{%endwith%}
 

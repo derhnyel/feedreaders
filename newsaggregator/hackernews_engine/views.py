@@ -17,20 +17,27 @@ def handler404(request):
     response.status_code = 404
     return response
 def index(request):
-    return redirect('stories:top_stories')
+    return redirect('stories:new_stories')
 
 def NewStoriesView(request):
     pages_data = get_loader(request,'new')
     return render(request,'home.html',{'numbers': pages_data,})
 
 def merge_models(source=None,title=None):
-    if title != None:
-        posts = Posts.objects.filter(title=title).all().order_by('-time')
-        items = Items.objects.filter(title=title).all().order_by('-time')
-    elif source != None:
-         posts = Posts.objects.filter(source=source).all().order_by('-time')
-         items = Items.objects.filter(source=source).all().order_by('-time')   
 
+    if title != None:
+        reg=r"^(?=.*query)"
+        reg=reg.replace('query',title)
+        posts = Posts.objects.filter(title__regex=reg).all().order_by('-time')
+        items = Items.objects.filter(title__regex=reg).all().order_by('-time')
+
+    elif source not in ['new',None]:
+         posts = Posts.objects.filter(type=source).all().order_by('-time')
+         items = Items.objects.filter(type=source).all().order_by('-time')
+
+    elif source == 'new':
+         posts = Posts.objects.filter(type='story').all().order_by('-time')
+         items = Items.objects.filter(type='story').all().order_by('-time')      
     sorted_items = sorted(
         chain(posts, items),
     key=lambda item: item.time, reverse=True)
@@ -48,10 +55,6 @@ def get_loader(request,source):
         num_pages = paginator.page(paginator.num_pages)
     return num_pages       
 
-
-
-         
-
 def initialize(source):
    try: 
     cached_ids = cache.get("cached_{source}_ids".format(source=source))
@@ -59,21 +62,22 @@ def initialize(source):
     #loop = asyncio.get_event_loop()
     if cached_ids == None and len(list(db_ids)) > 0:
        if source == 'top':
-           items = Items.objects.filter(top=True).all().order_by('date_fetched')
+           items = Items.objects.filter(top=True).all().order_by('-date_fetched')
            return items
        elif source in ['comment','job']:
-           items = Items.objects.filter(type=source).all().order_by('-time')
-           #items = merge_models(source=source)
+           #items = Items.objects.filter(type=source).all().order_by('-time')
+           items = merge_models(source=source)
            return items
        elif source == 'new':
-           items = Items.objects.filter(type='story').all().order_by('-time')
+           #items = Items.objects.filter(type='story').all().order_by('-time')
+           items = merge_models(source=source)
            return items       
     elif cache != None and len(list(db_ids)) > 0:
-        # items=[]
-        # objects=Items.objects.all()
-        # for _id in cached_ids:
-        #    items.append(objects.get(id=_id)) 
-        items = [Items.objects.get(id=id) for id in cached_ids]
+        items=[]
+        objects=Items.objects.all()
+        for _id in cached_ids:
+           items.append(objects.get(id=_id)) 
+        #items = [Items.objects.get(id=id) for id in cached_ids]
         return items
     else:
         return [] 
@@ -87,6 +91,7 @@ def initialize(source):
            return items
        elif source == 'new':
            items = Items.objects.filter(type='story').all().order_by('-time')
+
            return items
 
 
