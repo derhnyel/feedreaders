@@ -24,7 +24,8 @@ def NewStoriesView(request):
     return render(request,'home.html',{'numbers': pages_data,})
 
 def merge_models(source=None,title=None):
-    reg= r'^(.*?)query'
+    #reg= r'^(.*?)query'
+    reg=r'^(?=.*query)'
     reg=reg.replace('query',title)
     if title is not None:
         posts = Posts.objects.filter(title=reg).all().order_by('-time')
