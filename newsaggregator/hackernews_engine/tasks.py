@@ -62,10 +62,12 @@ def create_pk(new_items,fetched_ids,source):
                 #     Items.objects.create(id=item['id'],source=source,new=True)#create each model object instance
                 if source == 'top':
                     Items.objects.create(id=item['id'],top=True)
-                if source in ['job','comment','new']:
+                if source in ['job','new']:
                     Items.objects.create(id=item['id'],source=source)        
             else:
-                Items.objects.create(id=item['id'],source=source,parent=item['parent'])    
+                Items.objects.create(id=item['id'],source=source,parent=item['parent'])
+        else:
+            fetched_ids.remove(item['id'])            
       except:
           fetched_ids.remove(item['id'])
     return fetched_ids    
@@ -110,6 +112,7 @@ def update_items(source,id_list=None):
     news_items,fetched_ids = fetch_items(fetched_ids,cache_key,source,db_ids) #if source is not 'comment' else (fetched_ids,id_list)#fetch new items
     #print('Recent {source} item(s): {item}'.format(source=source, item = len(news_items)))
     fetched_ids = create_pk(news_items,fetched_ids,source)
+
     for item in news_items:#iterate and add other attributes present in item except id 
         item_id = item['id']    
         for key in item:   
@@ -117,12 +120,12 @@ def update_items(source,id_list=None):
             if key != 'id' and item['type'] not in ['unknown',None]:
                 if key == 'kids' and key not in [None,[]] and source not in ['comment','job']:
                     comment_list=item['kids']
-                    comments = comments+comment_list[:2] if len(comment_list) > 2 else comments+comment_list                    
+                    comments = comments+comment_list[:3] if len(comment_list) > 3 else comments+comment_list                    
                     kwargs = {key:len(item[key])}
                     Items.objects.filter(pk=item_id).update(**kwargs)
                 if key != 'kids' or key != 'parts':
                     kwargs = {key:item[key]}
-                    Items.objects.filter(pk=item_id).update(**kwargs)
+                    Items.objects.filter(pk=item_id).update(**kwargs)    
             else:    
                 fetched_ids.remove(item_id)
                 break
@@ -141,12 +144,13 @@ def update_items(source,id_list=None):
         cache.delete(cache_key)
         cache.set(cache_key,fetched_ids) #set top or new to fetched in cache     
     if comments!=[]:         
-        scheduler= BackgroundScheduler(timezone="Asia/Beirut")
+        #scheduler= BackgroundScheduler(timezone="Asia/Beirut")
         # time_change = datetime.timedelta(seconds=5)
         # time_now = datetime.now()
         # time = time_now+time_change
-        scheduler.add_job(update_items,args=['comment',comments],run_date=datetime.now(),id="FetchCommentsTaskid",misfire_grace_time=None,replace_existing=False)
-        scheduler.start()
+        #scheduler.add_job(update_items,args=['comment',comments],run_date=datetime.now(),id="FetchCommentsTaskid",misfire_grace_time=None,replace_existing=False)
+        #scheduler.start()
+        update_items('comment',id_list=comments)
         
         
 

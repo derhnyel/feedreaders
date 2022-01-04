@@ -60,16 +60,21 @@ def initialize(source):
        if source == 'top':
            items = Items.objects.filter(top=True).all().order_by('date_fetched')
            return items
-       elif source in ['comment','new','job']:
-           items = Items.objects.filter(source=source).all().order_by('-time')
+       elif source in ['comment','job']:
+           items = Items.objects.filter(type=source).all().order_by('-time')
            #items = merge_models(source=source)
            return items
+       elif source == 'new':
+           items = Items.objects.filter(type='story').all().order_by('-time')
+           return items
+
            
     if cache != None and len(list(db_ids)) > 0:
-        items=[]
-        objects=Items.objects.all()
-        for _id in cached_ids:
-           items.append(objects.get(id=_id)) 
+        # items=[]
+        # objects=Items.objects.all()
+        # for _id in cached_ids:
+        #    items.append(objects.get(id=_id)) 
+        items = [Items.objects.get(id=id) for id in cached_ids]
         return items
 
     return []    
@@ -129,8 +134,6 @@ class ListCommentView(ListView):
 
 class CommentView(ListView):
     model = Items
-    template_name = 'search.html'
-    context_object_name = 'all_search_results'
     paginate_by = 20
     context_object_name = 'numbers'
     template_name = 'home.html'
