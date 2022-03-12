@@ -11,7 +11,7 @@ click==8.0.3
 colorama==0.4.4
 Deprecated==1.2.13
 dj-database-url==0.5.0
-Django==3.2.10
+Django==3.2.12
 django-celery==3.3.1
 django-heroku==0.3.1
 django-mathfilters==1.0.0
